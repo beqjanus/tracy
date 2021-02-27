@@ -12,6 +12,14 @@ jobs:
     runs-on: windows-2019
 
     steps:
+    - uses: little-core-labs/get-git-tag@v3.0.1
+    id: tagName
+    with:
+        tagRegex: "v(.*)"  # Strip leading v (Full tag string is returned if regex is not defined.)
+        tagRegexGroup: 1 
+    - name: Some other step # Output usage example
+    with:
+        tagname: ${{ steps.tagName.outputs.tag }}
     - uses: actions/checkout@v2
     - uses: microsoft/setup-msbuild@v1.0.2
     - name: Integrate vcpkg
@@ -42,16 +50,26 @@ jobs:
       run: msbuild .\library\win32\TracyProfiler.vcxproj /property:Configuration=Release /property:Platform=x64
     - name: Package binaries
       run: |
-        mkdir bin
-        mkdir bin\dev
-        copy profiler\build\win32\x64\Release\Tracy.exe bin
-        copy update\build\win32\x64\Release\update.exe bin
-        copy capture\build\win32\x64\Release\capture.exe bin
-        copy import-chrome\build\win32\x64\Release\import-chrome.exe bin
-        copy csvexport\build\win32\x64\Release\csvexport.exe bin
-        copy library\win32\x64\Release\TracyProfiler.dll bin\dev
-        copy library\win32\x64\Release\TracyProfiler.lib bin\dev
-        7z a Tracy.7z bin
+        mkdir -p bin\release
+        mkdir -p bin\debug
+        mkdir -p lib\release
+        mkdir -p lib\debug
+        mkdir -p include\tracy\client
+        mkdir -p include\tracy\common
+        copy profiler\build\win32\x64\Release\Tracy.exe bin\release
+        copy update\build\win32\x64\Release\update.exe bin\release
+        copy capture\build\win32\x64\Release\capture.exe bin\release
+        copy import-chrome\build\win32\x64\Release\import-chrome.exe bin\release
+        copy csvexport\build\win32\x64\Release\csvexport.exe bin\release
+        copy library\win32\x64\Release\TracyProfiler.dll lib\release
+        copy library\win32\x64\Release\TracyProfiler.lib lib\release
+        copy library\win32\x64\Debug\TracyProfiler.dll lib\debug
+        copy library\win32\x64\Debug\TracyProfiler.lib lib\debug
+        copy library\win32\x64\Debug\TracyProfiler.lib lib\debug
+        copy *.hpp include\tracy
+        copy common\*.hpp include\common
+        copy client\*.hpp include\client
+        tar cvjf Tracy-${GIT_TAG_NAME}-windows64-$GITHUB_BUILD_VER.tar.bz2  bin lib include
     - uses: actions/upload-artifact@v2
       with:
-        path: Tracy.7z
+        path: Tracy-${GIT_TAG_NAME}-windows64-$GITHUB_BUILD_VER.tar.bz2
