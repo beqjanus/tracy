@@ -47,8 +47,6 @@ jobs:
     - name: Library
       run: msbuild .\library\win32\TracyProfiler.vcxproj /property:Configuration=Release /property:Platform=x64
     - name: Package binaries
-      with:
-        tagName: ${{ steps.tagName.outputs.tag }}
       run: |
         mkdir -p bin\release
         mkdir -p bin\debug
