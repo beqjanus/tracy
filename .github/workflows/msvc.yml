@@ -44,7 +44,7 @@ jobs:
       run: msbuild .\import-chrome\build\win32\import-chrome.vcxproj /property:Configuration=Debug /property:Platform=x64
     - name: Import-chrome utility Release
       run: msbuild .\import-chrome\build\win32\import-chrome.vcxproj /property:Configuration=Release /property:Platform=x64
-    - name: Library
+    - name: Library Release
       run: msbuild .\library\win32\TracyProfiler.vcxproj /property:Configuration=Release /property:Platform=x64
     - name: Package binaries
       run: |
@@ -61,13 +61,10 @@ jobs:
         copy csvexport\build\win32\x64\Release\csvexport.exe bin\release
         copy library\win32\x64\Release\TracyProfiler.dll lib\release
         copy library\win32\x64\Release\TracyProfiler.lib lib\release
-        copy library\win32\x64\Debug\TracyProfiler.dll lib\debug
-        copy library\win32\x64\Debug\TracyProfiler.lib lib\debug
-        copy library\win32\x64\Debug\TracyProfiler.lib lib\debug
         copy *.hpp include\tracy
         copy common\*.hpp include\common
         copy client\*.hpp include\client
-        tar cvjf Tracy-${GIT_TAG_NAME}-windows64-$GITHUB_BUILD_VER.tar.bz2  bin lib include
+        tar cvjf Tracy-${GIT_TAG_NAME}-windows64-${GITHUB_BUILD_VER}.tar.bz2  bin lib include
     - uses: actions/upload-artifact@v2
       with:
-        path: Tracy-${GIT_TAG_NAME}-windows64-$GITHUB_BUILD_VER.tar.bz2
+        path: Tracy-${GIT_TAG_NAME}-windows64-${GITHUB_BUILD_VER}.tar.bz2
