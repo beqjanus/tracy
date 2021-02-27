@@ -14,8 +14,8 @@ jobs:
 
     steps:
     - uses: little-core-labs/get-git-tag@v3.0.1
-    id: tagName
-    with:
+      id: tagName
+      with:
         tagRegex: "v(.*)"  # Strip leading v (Full tag string is returned if regex is not defined.)
         tagRegexGroup: 1 
     - uses: actions/checkout@v2
@@ -48,7 +48,7 @@ jobs:
       run: msbuild .\library\win32\TracyProfiler.vcxproj /property:Configuration=Release /property:Platform=x64
     - name: Package binaries
       with:
-        tagname: ${{ steps.tagName.outputs.tag }}
+        tagName: ${{ steps.tagName.outputs.tag }}
       run: |
         mkdir -p bin\release
         mkdir -p bin\debug
