@@ -24,46 +24,21 @@ jobs:
       run: vcpkg integrate install
     - name: Build vcpkg libraries
       run: vcpkg install freetype glfw3 capstone[arm,arm64,x86] --triplet x64-windows-static
-    - name: Profiler GUI Debug
-      run: msbuild .\profiler\build\win32\Tracy.vcxproj /property:Configuration=Debug /property:Platform=x64
     - name: Profiler GUI Release
       run: msbuild .\profiler\build\win32\Tracy.vcxproj /property:Configuration=Release /property:Platform=x64
-    - name: Update utility Debug
-      run: msbuild .\update\build\win32\update.vcxproj /property:Configuration=Debug /property:Platform=x64
     - name: Update utility Release
       run: msbuild .\update\build\win32\update.vcxproj /property:Configuration=Release /property:Platform=x64
-    - name: Capture utility Debug
-      run: msbuild .\capture\build\win32\capture.vcxproj /property:Configuration=Debug /property:Platform=x64
     - name: Capture utility Release
       run: msbuild .\capture\build\win32\capture.vcxproj /property:Configuration=Release /property:Platform=x64
-    - name: Csvexport utility Debug
-      run: msbuild .\csvexport\build\win32\csvexport.vcxproj /property:Configuration=Debug /property:Platform=x64
     - name: Csvexport utility Release
       run: msbuild .\csvexport\build\win32\csvexport.vcxproj /property:Configuration=Release /property:Platform=x64
-    - name: Import-chrome utility Debug
-      run: msbuild .\import-chrome\build\win32\import-chrome.vcxproj /property:Configuration=Debug /property:Platform=x64
     - name: Import-chrome utility Release
       run: msbuild .\import-chrome\build\win32\import-chrome.vcxproj /property:Configuration=Release /property:Platform=x64
     - name: Library Release
       run: msbuild .\library\win32\TracyProfiler.vcxproj /property:Configuration=Release /property:Platform=x64
     - name: Package binaries
       run: |
-        mkdir -p bin\release
-        mkdir -p bin\debug
-        mkdir -p lib\release
-        mkdir -p lib\debug
-        mkdir -p include\tracy\client
-        mkdir -p include\tracy\common
-        copy profiler\build\win32\x64\Release\Tracy.exe bin\release
-        copy update\build\win32\x64\Release\update.exe bin\release
-        copy capture\build\win32\x64\Release\capture.exe bin\release
-        copy import-chrome\build\win32\x64\Release\import-chrome.exe bin\release
-        copy csvexport\build\win32\x64\Release\csvexport.exe bin\release
-        copy library\win32\x64\Release\TracyProfiler.dll lib\release
-        copy library\win32\x64\Release\TracyProfiler.lib lib\release
-        copy *.hpp include\tracy
-        copy common\*.hpp include\common
-        copy client\*.hpp include\client
+        pwsh -command ".\$GITHUB_WORKSPACE\Firestorm-3p\prepare-3p.ps1"
         tar cvjf Tracy-${GIT_TAG_NAME}-windows64-${GITHUB_BUILD_VER}.tar.bz2  bin lib include
     - uses: actions/upload-artifact@v2
       with:
