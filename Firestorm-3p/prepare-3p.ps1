@@ -14,7 +14,7 @@ mkdir -p include\tracy\common
 
 Copy-Item $tracy_folder_root\profiler\build\win32\x64\Release\Tracy.exe .\bin\release
 Copy-Item $tracy_folder_root\update\build\win32\x64\Release\update.exe .\bin\release
-Copy-Item $tracy_folder_root\capture\build\win32\x64\Release\capture.exe .\bin\release
+# Copy-Item $tracy_folder_root\capture\build\win32\x64\Release\capture.exe .\bin\release
 Copy-Item $tracy_folder_root\import-chrome\build\win32\x64\Release\import-chrome.exe .\bin\release
 Copy-Item $tracy_folder_root\csvexport\build\win32\x64\Release\csvexport.exe .\bin\release
 Copy-Item $tracy_folder_root\library\win32\x64\Release\TracyProfiler.dll .\lib\release
