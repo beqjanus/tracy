@@ -38,7 +38,7 @@ jobs:
       run: msbuild .\library\win32\TracyProfiler.vcxproj /property:Configuration=Release /property:Platform=x64
     - name: Package binaries
       run: |
-        pwsh -command ".\$GITHUB_WORKSPACE\Firestorm-3p\prepare-3p.ps1 -tracy_folder_root $GITHUB_WORKSPACE"
+        pwsh -command ".\${{github.workspace}}\Firestorm-3p\prepare-3p.ps1 -tracy_folder_root ${{github.workspace}}"
         tar cvjf Tracy-${GIT_TAG_NAME}-windows64-${GITHUB_BUILD_VER}.tar.bz2  bin lib include
     - uses: actions/upload-artifact@v2
       with:
