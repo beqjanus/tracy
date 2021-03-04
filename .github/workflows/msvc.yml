@@ -41,8 +41,7 @@ jobs:
       run: |
         pwsh -command "${{github.workspace}}\Firestorm-3p\prepare-3p.ps1 -tracy_folder_root ${{github.workspace}}"
     - name: Make tarball
-      uses: master-atul/tar-action@v1.0.2
-      id: compress
+      uses: actions/tar-action
       with:
         command: c
         cwd: ./3p
@@ -50,7 +49,7 @@ jobs:
           bin
           include
           lib
-        outPath: Tracy-${GIT_TAG_NAME}-windows64-${GITHUB_BUILD_VER}.tar.gz
+        destFile: Tracy-${GIT_TAG_NAME}-windows64-${GITHUB_BUILD_VER}.tar.bz2
     - uses: actions/upload-artifact@v2
       with:
-        path: Tracy-${GIT_TAG_NAME}-windows64-${GITHUB_BUILD_VER}.tar.gz
+        path: Tracy-${GIT_TAG_NAME}-windows64-${GITHUB_BUILD_VER}.tar.bz2
