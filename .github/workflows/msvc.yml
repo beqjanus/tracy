@@ -49,7 +49,7 @@ jobs:
           bin
           include
           lib
-        destFile: Tracy-${GIT_TAG_NAME}-windows64-${GITHUB_BUILD_VER}.tar.bz2
+        destFile: Tracy-${{ steps.tagName.outputs.tag }}-windows64.tar.bz2
     - uses: actions/upload-artifact@v2
       with:
-        path: Tracy-${GIT_TAG_NAME}-windows64-${GITHUB_BUILD_VER}.tar.bz2
+        path: Tracy-${{ steps.tagName.outputs.tag }}-windows64.tar.bz2
