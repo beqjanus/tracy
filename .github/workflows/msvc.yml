@@ -41,7 +41,7 @@ jobs:
       run: |
         pwsh -command "${{github.workspace}}\Firestorm-3p\prepare-3p.ps1 -tracy_folder_root ${{github.workspace}}"
     - name: Make tarball
-      uses: actions/tar-action
+      uses: actions/tar-action@master
       with:
         command: c
         cwd: ./3p
