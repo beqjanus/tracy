@@ -39,7 +39,6 @@ jobs:
       run: msbuild .\library\win32\TracyProfiler.vcxproj /property:Configuration=Release /property:Platform=x64
     - name: Package binaries
       run: |
-      run: |
         mkdir bin
         mkdir bin\dev
         copy profiler\build\win32\x64\Release\Tracy.exe bin
