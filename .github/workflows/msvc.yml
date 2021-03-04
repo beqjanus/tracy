@@ -11,6 +11,7 @@ jobs:
   build:
 
     runs-on: windows-2019
+    timeout-minutes: 30
 
     steps:
     - uses: little-core-labs/get-git-tag@v3.0.1
