@@ -48,7 +48,7 @@ jobs:
         copy csvexport\build\win32\x64\Release\csvexport.exe bin
         copy library\win32\x64\Release\TracyProfiler.dll bin\dev
         copy library\win32\x64\Release\TracyProfiler.lib bin\dev
-      name: Make tarball
+    - name: Make tarball
       run: tar cvjf Tracy-${GIT_TAG_NAME}-windows64-${GITHUB_BUILD_VER}.tar.bz2  bin
     - uses: actions/upload-artifact@v2
       with:
