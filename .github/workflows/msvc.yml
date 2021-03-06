@@ -18,7 +18,8 @@ jobs:
     - uses: microsoft/setup-msbuild@v1.0.2
     - name: get latest tag
       id: tagName
-      uses: little-core-labs/get-git-tag@v3.0.1
+      # uses: little-core-labs/get-git-tag@v3.0.1
+      uses: WyriHaximus/github-action-get-previous-tag@v1
       with:
         tagRegex: "v(.*)"  # Strip leading v (Full tag string is returned if regex is not defined.)
         tagRegexGroup: 1 
@@ -41,6 +42,16 @@ jobs:
     - name: Package binaries
       run: |
         pwsh -command "${{github.workspace}}\Firestorm-3p\prepare-3p.ps1 -tracy_folder_root ${{github.workspace}}"
+    - name: strip tag
+      id: stripTag
+      uses: frabert/replace-string-action@v1.2
+      with:
+        pattern: 'v(.*)'
+        string: ${{ steps.tagName.outputs.tag }}
+        replace-with: '$1'
+    - name: generate output filename
+      env:
+        TARBALL_NAME: Tracy-${{ steps.stripTag.outputs.replaced }}-windows64-${{ steps.tagName.outputs.timestamp }}.tar
     - name: Make tarball
       uses: beqjanus/tar-action@master
       id: tarfile
@@ -51,10 +62,10 @@ jobs:
           bin
           include
           lib
-        outPath: Tracy-${{ steps.tagName.outputs.tag }}-windows64.tar
+        outPath: $TARBALL_NAME
     - name: bzip it
       run: |
-        bzip2 Tracy-${{ steps.tagName.outputs.tag }}-windows64.tar
+        bzip2 $TARBALL_NAME
     - uses: actions/upload-artifact@v2
       with:
-        path: Tracy-${{ steps.tagName.outputs.tag }}-windows64.tar.bz2
+        path: $TARBALL_NAME.bz2
