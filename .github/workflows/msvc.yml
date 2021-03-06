@@ -16,9 +16,15 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - uses: microsoft/setup-msbuild@v1.0.2
+    - name: get latest revision
+      id: rev
+      run: git rev-list --tags --max-count=1 >> $GITREV
     - name: get latest tag
-      id: tagName
-      uses: WyriHaximus/github-action-get-previous-tag@v1
+      id: tagname
+      run: git describe --tags $GITREV >> $GIT_TAG_NAME
+    - name: get latest tag timestamp
+      id: timestamp
+      run: git log -1 --format=%at $GITREV >> $GIT_TAG_TIMESTAMP
     - name: Integrate vcpkg
       run: vcpkg integrate install
     - name: Build vcpkg libraries
@@ -38,18 +44,11 @@ jobs:
     - name: Package binaries
       run: |
         pwsh -command "${{github.workspace}}\Firestorm-3p\prepare-3p.ps1 -tracy_folder_root ${{github.workspace}}"
-    - name: strip tag
-      id: stripTag
-      uses: frabert/replace-string-action@v1.2
-      with:
-        pattern: 'v(.*)'
-        string: ${{ steps.tagName.outputs.tag }}
-        replace-with: '$1'
     - name: Make tarball
       uses: beqjanus/tar-action@master
       id: tarfile
       env:
-        TARBALL_NAME: Tracy-${{ steps.stripTag.outputs.replaced }}-windows64-${{ steps.tagName.outputs.timestamp }}.tar
+        TARBALL_NAME: Tracy-${GIT_TAG_NAME}-windows64-${GIT_TAG_TIMESTAMP}.tar
       with:
         command: c
         cwd: ./3p
