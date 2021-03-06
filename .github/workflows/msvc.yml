@@ -42,7 +42,7 @@ jobs:
         pwsh -command "${{github.workspace}}\Firestorm-3p\prepare-3p.ps1 -tracy_folder_root ${{github.workspace}}"
     - name: Make tarball
       run: |
-        cwd = ${{github.workspace}}
+        cd ${{github.workspace}}
         cd 3p
         tar -jcvf Tracy-${{ steps.tagName.outputs.tag }}-windows64.tar.bz2 bin lib include
     - uses: actions/upload-artifact@v2
