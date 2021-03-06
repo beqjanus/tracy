@@ -18,7 +18,6 @@ jobs:
     - uses: microsoft/setup-msbuild@v1.0.2
     - name: get latest tag
       id: tagName
-      # uses: little-core-labs/get-git-tag@v3.0.1
       uses: WyriHaximus/github-action-get-previous-tag@v1
       with:
         tagRegex: "v(.*)"  # Strip leading v (Full tag string is returned if regex is not defined.)
@@ -49,12 +48,11 @@ jobs:
         pattern: 'v(.*)'
         string: ${{ steps.tagName.outputs.tag }}
         replace-with: '$1'
-    - name: generate output filename
-      env:
-        TARBALL_NAME: Tracy-${{ steps.stripTag.outputs.replaced }}-windows64-${{ steps.tagName.outputs.timestamp }}.tar
     - name: Make tarball
       uses: beqjanus/tar-action@master
       id: tarfile
+      env:
+        TARBALL_NAME: Tracy-${{ steps.stripTag.outputs.replaced }}-windows64-${{ steps.tagName.outputs.timestamp }}.tar
       with:
         command: c
         cwd: ./3p
