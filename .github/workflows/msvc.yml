@@ -19,9 +19,6 @@ jobs:
     - name: get latest tag
       id: tagName
       uses: WyriHaximus/github-action-get-previous-tag@v1
-      with:
-        tagRegex: "v(.*)"  # Strip leading v (Full tag string is returned if regex is not defined.)
-        tagRegexGroup: 1 
     - name: Integrate vcpkg
       run: vcpkg integrate install
     - name: Build vcpkg libraries
