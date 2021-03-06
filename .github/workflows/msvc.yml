@@ -14,13 +14,14 @@ jobs:
     timeout-minutes: 30
 
     steps:
-    - uses: little-core-labs/get-git-tag@v3.0.1
+    - uses: actions/checkout@v2
+    - uses: microsoft/setup-msbuild@v1.0.2
+    - name: get latest tag
       id: tagName
+      uses: little-core-labs/get-git-tag@v3.0.1
       with:
         tagRegex: "v(.*)"  # Strip leading v (Full tag string is returned if regex is not defined.)
         tagRegexGroup: 1 
-    - uses: actions/checkout@v2
-    - uses: microsoft/setup-msbuild@v1.0.2
     - name: Integrate vcpkg
       run: vcpkg integrate install
     - name: Build vcpkg libraries
@@ -42,6 +43,7 @@ jobs:
         pwsh -command "${{github.workspace}}\Firestorm-3p\prepare-3p.ps1 -tracy_folder_root ${{github.workspace}}"
     - name: Make tarball
       uses: beqjanus/tar-action@master
+      id: tarfile
       with:
         command: c
         cwd: ./3p
@@ -50,6 +52,9 @@ jobs:
           include
           lib
         outPath: Tracy-${{ steps.tagName.outputs.tag }}-windows64.tar
+    - name: bzip it
+      run: |
+        bzip2 Tracy-${{ steps.tagName.outputs.tag }}-windows64.tar
     - uses: actions/upload-artifact@v2
       with:
         path: Tracy-${{ steps.tagName.outputs.tag }}-windows64.tar.bz2
