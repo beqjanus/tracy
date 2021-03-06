@@ -14,8 +14,10 @@ jobs:
     timeout-minutes: 30
 
     steps:
-    - uses: actions/checkout@v2
     - uses: microsoft/setup-msbuild@v1.0.2
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     - name: get latest revision
       id: rev
       run: git rev-list --tags --max-count=1 >> $GITREV
