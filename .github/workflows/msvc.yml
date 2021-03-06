@@ -41,10 +41,15 @@ jobs:
       run: |
         pwsh -command "${{github.workspace}}\Firestorm-3p\prepare-3p.ps1 -tracy_folder_root ${{github.workspace}}"
     - name: Make tarball
-      run: |
-        cd ${{github.workspace}}
-        cd 3p
-        tar -jcvf Tracy-${{ steps.tagName.outputs.tag }}-windows64.tar.bz2 bin lib include
+      uses: beqjanus/tar-action@master
+      with:
+        command: c
+        cwd: ./3p
+        files: |
+          bin
+          include
+          lib
+        outPath: Tracy-${{ steps.tagName.outputs.tag }}-windows64.tar
     - uses: actions/upload-artifact@v2
       with:
         path: Tracy-${{ steps.tagName.outputs.tag }}-windows64.tar.bz2
