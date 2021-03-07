@@ -61,7 +61,7 @@ jobs:
         outPath: $env:TARBALL_NAME
     - name: bzip it
       run: |
-        bzip2 ${{ env:TARBALL_NAME }}
+        bzip2 $env:TARBALL_NAME
     - uses: actions/upload-artifact@v2
       with:
-        path: ${{ env:TARBALL_NAME }}.bz2
+        path: $env:TARBALL_NAME.bz2
