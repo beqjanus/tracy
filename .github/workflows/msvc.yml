@@ -27,6 +27,9 @@ jobs:
     - name: get latest tag timestamp
       id: timestamp
       run: git log -1 --format=%at $GITREV >> $GIT_TAG_TIMESTAMP
+    - name: Echo the git info
+      id: echo
+      run: echo "::debug::GITREV=$GITREV GIT_TAG_NAME=$GIT_TAG_NAME GIT_TAG_TIMESTAMP=$GIT_TAG_TIMESTAMP"
     - name: Integrate vcpkg
       run: vcpkg integrate install
     - name: Build vcpkg libraries
@@ -50,7 +53,7 @@ jobs:
       uses: beqjanus/tar-action@master
       id: tarfile
       env:
-        TARBALL_NAME: Tracy-$env:GIT_TAG_NAME-windows64-$env:GIT_TAG_TIMESTAMP.tar
+        TARBALL_NAME: "Tracy-{0}-windows64-{1}.tar" -f $env:GIT_TAG_NAME, $env:GIT_TAG_TIMESTAMP
       with:
         command: c
         cwd: ./3p
@@ -58,10 +61,10 @@ jobs:
           bin
           include
           lib
-        outPath: $env:TARBALL_NAME
+        outPath: ${TARBALL_NAME}
     - name: bzip it
       run: |
-        bzip2 $env:TARBALL_NAME
+        bzip2 ${{ steps.tarFile.outputs.tarName }}
     - uses: actions/upload-artifact@v2
       with:
-        path: $env:TARBALL_NAME.bz2
+        path: https://gyazo.com/17f1b378afd39e04e033c678e90bcb8f+".bz2"
