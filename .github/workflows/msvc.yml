@@ -61,7 +61,6 @@ jobs:
     - name: Make tarball
       uses: beqjanus/tar-action@master
       id: tarfile
-      shell: bash
       with:
         command: c
         cwd: ./3p
