@@ -12,7 +12,6 @@ jobs:
 
     runs-on: windows-2019
     timeout-minutes: 30
-    shell: bash
 
     steps:
     - uses: microsoft/setup-msbuild@v1.0.2
@@ -21,6 +20,7 @@ jobs:
         fetch-depth: 0
     - name: get latest revision
       id: rev
+      shell: bash
       run:  echo "GITREV=`git rev-list --tags --max-count=1`" >> $GITHUB_ENV
     - name: get latest tag
       id: tagname
