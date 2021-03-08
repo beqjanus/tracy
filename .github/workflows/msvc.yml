@@ -20,10 +20,7 @@ jobs:
         fetch-depth: 0
     - name: get latest revision
       id: rev
-      run: |
-        echo "GITREV=`git rev-list --tags --max-count=1`" >> $GITHUB_ENV
-        echo "::debug::git rev is $env:GITREV"
-        echo "::set-output name=rev::$env:GITREV"
+      run:  echo "GITREV=`git rev-list --tags --max-count=1`" >> $GITHUB_ENV
     - name: get latest tag
       id: tagname
       run: git describe --tags $env:GITREV >> $GIT_TAG_NAME
