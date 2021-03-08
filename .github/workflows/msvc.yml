@@ -53,11 +53,15 @@ jobs:
       run: |
         pwsh -command "${{github.workspace}}\Firestorm-3p\prepare-3p.ps1 -tracy_folder_root ${{github.workspace}}"
     - name: export tar name
+      id: tarname
       shell: bash
-      run: echo "TARBALL_NAME=Tracy-${GIT_TAG_NAME}-windows64-${GIT_TAG_TIMESTAMP}.tar" >> $GITHUB_ENV
+      run: |
+        echo "TARBALL_NAME=Tracy-${GIT_TAG_NAME}-windows64-${GIT_TAG_TIMESTAMP}.tar" >> $GITHUB_ENV
+        echo "::set-output name=tarball_name::Tracy-${GIT_TAG_NAME}-windows64-${GIT_TAG_TIMESTAMP}.tar"
     - name: Make tarball
       uses: beqjanus/tar-action@master
       id: tarfile
+      shell: bash
       with:
         command: c
         cwd: ./3p
@@ -65,7 +69,7 @@ jobs:
           bin
           include
           lib
-        outPath: $env:TARBALL_NAME
+        outPath: ${{ steps.tarname.outputs.tarball_name }}
     - name: bzip it
       run: |
         bzip2 ${{ steps.tarFile.outputs.tarName }}
