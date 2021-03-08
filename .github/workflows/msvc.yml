@@ -53,7 +53,7 @@ jobs:
       uses: beqjanus/tar-action@master
       id: tarfile
       env:
-        TARBALL_NAME: "Tracy-{0}-windows64-{1}.tar" -f $env:GIT_TAG_NAME, $env:GIT_TAG_TIMESTAMP
+        TARBALL_NAME: "Tracy-${GIT_TAG_NAME}-windows64-${GIT_TAG_TIMESTAMP}.tar"
       with:
         command: c
         cwd: ./3p
