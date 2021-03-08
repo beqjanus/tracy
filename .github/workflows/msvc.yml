@@ -70,8 +70,10 @@ jobs:
           lib
         outPath: ${{ steps.tarname.outputs.tarball_name }}
     - name: bzip it
+      id: bzip
       run: |
         bzip2 ${{ steps.tarFile.outputs.tarName }}
+        echo "::set-output name=zipName::${{ steps.tarFile.outputs.tarName }}.bz2"
     - uses: actions/upload-artifact@v2
       with:
-        path: https://gyazo.com/17f1b378afd39e04e033c678e90bcb8f+".bz2"
+        path: ${{ steps.bzip.outputs.zipName}}
