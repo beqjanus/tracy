@@ -21,7 +21,7 @@ jobs:
     - name: get latest revision
       id: rev
       run: |
-        git rev-list --tags --max-count=1 >> $GITREV
+        echo "GITREV=`git rev-list --tags --max-count=1`" >> $GITHUB_ENV
         echo "::debug::git rev is $env:GITREV"
         echo "::set-output name=rev::$env:GITREV"
     - name: get latest tag
