@@ -24,10 +24,10 @@ jobs:
       run:  echo "GITREV=`git rev-list --tags --max-count=1`" >> $GITHUB_ENV
     - name: get latest tag
       id: tagname
-      run: git describe --tags $env:GITREV >> $GIT_TAG_NAME
+      run: echo "GIT_TAG_NAME=$(git describe --tags $env:GITREV)" >> $GITHUB_ENV
     - name: get latest tag timestamp
       id: timestamp
-      run: git log -1 --format=%at $env:GITREV >> $GIT_TAG_TIMESTAMP
+      run: echo "GIT_TAG_TIMESTAMP=$(git log -1 --format=%at $env:GITREV)"" >> $GITHUB_ENV
     - name: Echo the git info
       id: echo
       run: echo "::debug::GITREV=$env:GITREV GIT_TAG_NAME=$env:GIT_TAG_NAME GIT_TAG_TIMESTAMP=$env:GIT_TAG_TIMESTAMP"
