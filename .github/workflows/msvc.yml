@@ -22,17 +22,17 @@ jobs:
       id: rev
       run: |
         git rev-list --tags --max-count=1 >> $GITREV
-        echo "::debug::git rev is $GITREV"
-        echo "::set-output name=rev::$GITREV"
+        echo "::debug::git rev is $env:GITREV"
+        echo "::set-output name=rev::$env:GITREV"
     - name: get latest tag
       id: tagname
-      run: git describe --tags $GITREV >> $GIT_TAG_NAME
+      run: git describe --tags $env:GITREV >> $GIT_TAG_NAME
     - name: get latest tag timestamp
       id: timestamp
-      run: git log -1 --format=%at $GITREV >> $GIT_TAG_TIMESTAMP
+      run: git log -1 --format=%at $env:GITREV >> $GIT_TAG_TIMESTAMP
     - name: Echo the git info
       id: echo
-      run: echo "::debug::GITREV=$GITREV GIT_TAG_NAME=$GIT_TAG_NAME GIT_TAG_TIMESTAMP=$GIT_TAG_TIMESTAMP"
+      run: echo "::debug::GITREV=$env:GITREV GIT_TAG_NAME=$env:GIT_TAG_NAME GIT_TAG_TIMESTAMP=$env:GIT_TAG_TIMESTAMP"
     - name: Integrate vcpkg
       run: vcpkg integrate install
     - name: Build vcpkg libraries
