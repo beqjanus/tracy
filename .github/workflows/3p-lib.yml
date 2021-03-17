@@ -1,4 +1,4 @@
-name: MSVC
+name: 3p-tracy
 
 on:
   push:
