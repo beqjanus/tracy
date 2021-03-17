@@ -64,9 +64,9 @@ jobs:
         pip install autobuild
         autobuild build --verbose
         echo "::debug::Autobuild build complete"
-        autobuild package | egrep '(wrote|md5)' | tee build-info.txt | grep wrote | awk '{print $2}' > ${{github.workspace}}/packagename.txt
+        autobuild package | egrep '(wrote|md5)' | tee build-info.txt | grep wrote | awk '{print $2}' > ./packagename.txt
         echo "::debug::Autobuild package complete"
-        echo "::set-output name=bzip-path::$(cat $${{github.workspace}}/packagename.txt)"
+        echo "::set-output name=bzip-path::$(cat ./packagename.txt)"
     - uses: actions/upload-artifact@v2
       with:
         path: |
