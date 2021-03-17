@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+<llsd>
+	<map>
+		<key>package_description</key>
+		<map>
+			<key>canonical_repo</key>
+			<string>https://bitbucket.org/lindenlab/3p-glh_linear</string>
+			<key>copyright</key>
+			<string>Copyright (c) 2017-2021, Bartosz Taudul (wolf@nereid.pl)</string>
+			<key>description</key>
+			<string>A real-time, nanosecond resolution, remote telemetry, hybrid frame and sampling profiler for games and other applications.</string>
+			<key>license</key>
+			<string>BSD</string>
+			<key>license_file</key>
+			<string>LICENSES/Tracy.txt</string>
+			<key>name</key>
+			<string>Tracy</string>
+			<key>platforms</key>
+			<map>
+				<key>common</key>
+				<map>
+					<key>build_directory</key>
+					<string>3p</string>
+					<key>configurations</key>
+					<map>
+						<key>default</key>
+						<map>
+							<key>build</key>
+							<map>
+								<key>arguments</key>
+								<array>
+									<string>not doing anything</string>
+								</array>
+								<key>command</key>
+								<string>echo</string>
+							</map>
+							<key>default</key>
+							<string>true</string>
+							<key>name</key>
+							<string>default</string>
+						</map>
+					</map>
+					<key>manifest</key>
+					<array>
+						<string>LICENSES/Tracy.txt</string>
+						<string>include/tracy/client</string>
+						<string>include/tracy/common</string>
+						<string>include/tracy/</string>
+					</array>
+					<key>name</key>
+					<string>common</string>
+				</map>
+			</map>
+			<key>version_file</key>
+			<string>VERSION.txt</string>
+		</map>
+		<key>type</key>
+		<string>autobuild</string>
+		<key>version</key>
+		<string>1.3</string>
+	</map>
+</llsd>

@@ -1,0 +1,68 @@
+name: MSVC
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: windows-2019
+    timeout-minutes: 30
+
+    steps:
+    - uses: microsoft/setup-msbuild@v1.0.2
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: get latest revision
+      id: rev
+      shell: bash
+      run:  echo "GITREV=`git rev-list --tags --max-count=1`" >> $GITHUB_ENV
+    - name: get latest tag
+      id: tagname
+      shell: bash
+      run: echo "GIT_TAG_NAME=$(git describe --tags ${GITREV})" >> $GITHUB_ENV
+    - name: get latest tag timestamp
+      shell: bash
+      id: timestamp
+      run: echo "GIT_TAG_TIMESTAMP=$(git log -1 --format=%at ${GITREV})" >> $GITHUB_ENV
+    - name: Echo the git info
+      id: echo
+      run: echo "::debug::GITREV=$env:GITREV GIT_TAG_NAME=$env:GIT_TAG_NAME GIT_TAG_TIMESTAMP=$env:GIT_TAG_TIMESTAMP"
+    # - name: Integrate vcpkg
+    #   run: vcpkg integrate install
+    # - name: Build vcpkg libraries
+    #   run: vcpkg install freetype glfw3 capstone[arm,arm64,x86] --triplet x64-windows-static
+    # - name: Profiler GUI Release
+    #   run: msbuild .\profiler\build\win32\Tracy.vcxproj /property:Configuration=Release /property:Platform=x64
+    # - name: Update utility Release
+    #   run: msbuild .\update\build\win32\update.vcxproj /property:Configuration=Release /property:Platform=x64
+    # - name: Capture utility Release
+    #   run: msbuild .\capture\build\win32\capture.vcxproj /property:Configuration=Release /property:Platform=x64
+    # - name: Csvexport utility Release
+    #   run: msbuild .\csvexport\build\win32\csvexport.vcxproj /property:Configuration=Release /property:Platform=x64
+    # - name: Import-chrome utility Release
+    #   run: msbuild .\import-chrome\build\win32\import-chrome.vcxproj /property:Configuration=Release /property:Platform=x64
+    # - name: Library Release
+    #   run: msbuild .\library\win32\TracyProfiler.vcxproj /property:Configuration=Release /property:Platform=x64
+    - name: Package binaries
+      run: |
+        pwsh -command "${{github.workspace}}\Firestorm-3p\prepare-3p.ps1 -tracy_folder_root ${{github.workspace}}"
+        echo $GIT_TAG_NAME > ${{github.workspace}}\3p\VERSION.txt
+    - name: use autobuild to build bzip
+      id: bzip-create
+      shell: bash    
+      run: |
+        pip install autobuild
+        autobuild build --config-file autobuild.xml --verbose
+        $bzip-file = autobuild package --config-file autobuild.xml | egrep '(wrote|md5)' | tee build-info.txt | grep wrote | awk '{print $2}'
+        echo "::set-output name=bzip-path::$(echo $bzip-file)"
+    - uses: actions/upload-artifact@v2
+      with:
+        path: |
+          ${{ steps.bzip-create.outputs.bzip-file}}
+          ${{github.workspace}}\build-info.txt
