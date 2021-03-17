@@ -56,14 +56,16 @@ jobs:
       run: |
         pwsh -command "${{github.workspace}}\Firestorm-3p\prepare-3p.ps1 -tracy_folder_root ${{github.workspace}}"
         echo $env:GIT_TAG_NAME > ${{github.workspace}}\3p\VERSION.txt
-        cat ${{github.workspace}}\3p\VERSION.txt
+        # cat ${{github.workspace}}\3p\VERSION.txt
     - name: use autobuild to build bzip
       id: bzip-create
       shell: bash
       run: |
         pip install autobuild
         autobuild build --config-file autobuild.xml --verbose
+        echo "::debug::Autobuild build complete"
         $bzip-file = autobuild package --config-file autobuild.xml | egrep '(wrote|md5)' | tee build-info.txt | grep wrote | awk '{print $2}'
+        echo "::debug::Autobuild package complete"
         echo "::set-output name=bzip-path::$(echo $bzip-file)"
     - uses: actions/upload-artifact@v2
       with:
