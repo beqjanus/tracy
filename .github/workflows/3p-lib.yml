@@ -18,6 +18,9 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '2.7'
     - name: get latest revision
       id: rev
       shell: bash
@@ -56,8 +59,6 @@ jobs:
     - name: use autobuild to build bzip
       id: bzip-create
       shell: bash
-      with:
-        python-version: '2.7'
       run: |
         pip install autobuild
         autobuild build --config-file autobuild.xml --verbose
