@@ -62,11 +62,11 @@ jobs:
       shell: bash
       run: |
         pip install autobuild
-        autobuild build --config-file autobuild.xml --verbose
+        autobuild build --verbose
         echo "::debug::Autobuild build complete"
-        $bzip-file = autobuild package --config-file autobuild.xml | egrep '(wrote|md5)' | tee build-info.txt | grep wrote | awk '{print $2}'
+        autobuild package | egrep '(wrote|md5)' | tee build-info.txt | grep wrote | awk '{print $2}' > ${{github.workspace}}/packagename.txt
         echo "::debug::Autobuild package complete"
-        echo "::set-output name=bzip-path::$(echo $bzip-file)"
+        echo "::set-output name=bzip-path::$(cat $${{github.workspace}}/packagename.txt)"
     - uses: actions/upload-artifact@v2
       with:
         path: |
