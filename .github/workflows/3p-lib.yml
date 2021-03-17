@@ -55,7 +55,8 @@ jobs:
     - name: Package binaries
       run: |
         pwsh -command "${{github.workspace}}\Firestorm-3p\prepare-3p.ps1 -tracy_folder_root ${{github.workspace}}"
-        echo $GIT_TAG_NAME > ${{github.workspace}}\3p\VERSION.txt
+        echo $env:GIT_TAG_NAME > ${{github.workspace}}\3p\VERSION.txt
+        cat ${{github.workspace}}\3p\VERSION.txt
     - name: use autobuild to build bzip
       id: bzip-create
       shell: bash
