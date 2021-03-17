@@ -55,7 +55,9 @@ jobs:
         echo $GIT_TAG_NAME > ${{github.workspace}}\3p\VERSION.txt
     - name: use autobuild to build bzip
       id: bzip-create
-      shell: bash    
+      shell: bash
+      with:
+        python-version: '2.7'
       run: |
         pip install autobuild
         autobuild build --config-file autobuild.xml --verbose
