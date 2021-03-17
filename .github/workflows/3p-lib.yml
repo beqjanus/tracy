@@ -70,5 +70,5 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         path: |
-          ${{ steps.bzip-create.outputs.bzip-file}}
+          ${{ steps.bzip-create.outputs.bzip-path}}
           ${{github.workspace}}\build-info.txt
