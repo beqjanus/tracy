@@ -45,6 +45,7 @@
 						<string>LICENSES/Tracy.txt</string>
 						<string>include/tracy/client</string>
 						<string>include/tracy/common</string>
+						<string>include/tracy/libbacktrace</string>
 						<string>include/tracy/</string>
 					</array>
 					<key>name</key>

@@ -62,9 +62,9 @@ jobs:
       shell: bash
       run: |
         pip install autobuild
-        autobuild build --verbose
+        autobuild build -p common --verbose
         echo "::debug::Autobuild build complete"
-        autobuild package | egrep '(wrote|md5)' | tee build-info.txt | grep wrote | awk '{print $2}' > ./packagename.txt
+        autobuild package -p common | egrep '(wrote|md5)' | tee build-info.txt | grep wrote | awk '{print $2}' > ./packagename.txt
         echo "::debug::Autobuild package complete"
         echo "::set-output name=bzip-path::$(cat ./packagename.txt)"
     - uses: actions/upload-artifact@v2

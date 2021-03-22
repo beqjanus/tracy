@@ -29,3 +29,4 @@ Move-Item $tracy_folder_root\common\*.cpp .\include\tracy\common
 Move-Item $tracy_folder_root\client\*.cpp .\include\tracy\client
 Move-Item $tracy_folder_root\client\*.hpp .\include\tracy\client
 Move-Item $tracy_folder_root\client\*.h .\include\tracy\client
+Move-Item $tracy_folder_root\libbacktrace\ .\include\tracy\libbacktrace
